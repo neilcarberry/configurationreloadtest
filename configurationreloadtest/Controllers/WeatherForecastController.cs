@@ -24,7 +24,10 @@ namespace configurationreloadtest.Controllers
         private readonly IOptionsSnapshot<TestObject> _testobjsnapshot;
         private readonly ScopyClass _testobjmonitorscoped;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, singleyclass singleyclass, ScopyClass testobjmonitorscoped, IOptionsMonitor<TestObject> testobjmonitor, IOptionsSnapshot<TestObject> testobjsnapshot, IServiceProvider services,
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, 
+            singleyclass singleyclass, ScopyClass testobjmonitorscoped, 
+            IOptionsMonitor<TestObject> testobjmonitor, IOptionsSnapshot<TestObject> testobjsnapshot, 
+            IServiceProvider services,
             Refresher refresher,
             IConfigurationRefresher configRefresher, IConfiguration configuration)
         {

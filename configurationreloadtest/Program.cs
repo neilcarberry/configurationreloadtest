@@ -37,7 +37,7 @@ namespace configurationreloadtest
 
             });
 
-
+            builder.Services.AddHostedService<backgroundworker>();
             builder.Services.Configure<TestObject>(builder.Configuration.GetSection("TestApp:TestObject"));
             builder.Services.AddOptions<TestObject>().RegisterChangeTokenSource();
             builder.Services.AddScoped<ScopyClass>();
