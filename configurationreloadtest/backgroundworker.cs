@@ -1,5 +1,4 @@
-﻿
-using Microsoft.Extensions.Configuration.AzureAppConfiguration;
+﻿using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.Extensions.Options;
 
 namespace configurationreloadtest
@@ -15,15 +14,22 @@ namespace configurationreloadtest
             IOptionsMonitor<TestObject> testobjmonitor,
             IServiceProvider services,
             Refresher refresher,
-            IConfigurationRefresher configRefresher, 
+            IConfigurationRefresher configRefresher,
             ILogger<backgroundworker> logger)
         {
             this.testobjmonitor = testobjmonitor;
+            this.testobjmonitor.OnChange((testobj) => dothing(testobj));
             this.refresher = refresher;
             this.configRefresher = configRefresher;
             this.logger = logger;
         }
-        protected override  async Task ExecuteAsync(CancellationToken stoppingToken)
+        public void dothing(TestObject x)
+        {
+            logger.LogInformation("first bit 1" + x.Password);
+            logger.LogInformation("second bit 2" + testobjmonitor.CurrentValue.Password);
+        }
+
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
 
             while (!stoppingToken.IsCancellationRequested)

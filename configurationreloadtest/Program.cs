@@ -24,12 +24,11 @@ namespace configurationreloadtest
                     .Select("TestApp:*", LabelFilter.Null)
                     .ConfigureRefresh(refreshOptions =>
                         refreshOptions
-                            .Register("TestApp:Sentinel", refreshAll: true));
+                            .Register("TestApp:Sentinel:part1", refreshAll: true).SetCacheExpiration(TimeSpan.FromSeconds(1)));
 
                 options.ConfigureKeyVault(keyVaultOptions =>
                 {
                     keyVaultOptions.SetCredential(new DefaultAzureCredential());
-                    keyVaultOptions.SetSecretRefreshInterval(TimeSpan.FromSeconds(10));
                 });
 
                 builder.Services.AddSingleton(options.GetRefresher());
@@ -38,8 +37,10 @@ namespace configurationreloadtest
             });
 
             builder.Services.AddHostedService<backgroundworker>();
-            builder.Services.Configure<TestObject>(builder.Configuration.GetSection("TestApp:TestObject"));
-            builder.Services.AddOptions<TestObject>().RegisterChangeTokenSource();
+            builder.Services.Configure<TestObject>(builder.Configuration.GetSection("TestApp:TestObject:part2"));
+            builder.Services.AddOptions<TestObject>("part1").RegisterChangeTokenSource();
+            builder.Services.Configure<TestObject>(builder.Configuration.GetSection("TestApp:TestObject:part1"));
+            builder.Services.AddOptions<TestObject>("part2").RegisterChangeTokenSource();
             builder.Services.AddScoped<ScopyClass>();
             builder.Services.AddScoped<singleyclass>();
 
